@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  @apply bg-space-light text-space-black antialiased select-none;
+  font-family: Outfit, sans-serif;
+  scrollbar-gutter: stable;
+}
+
+.text-box {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* number of lines to show */
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+input {
+  outline: none;
+}
+
+textarea {
+  outline: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  background : transparent;
+  border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #818181;
+  border-radius: 10px;
+  width : 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #8F8F8F;
+}
