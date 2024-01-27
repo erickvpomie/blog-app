@@ -8,6 +8,7 @@ import { Post } from '../../modules/posts/domain/Post.ts'
 import PostList from '../../sections/posts/PostList.tsx'
 import { useDebounce } from '../../hooks/useDebounce.ts'
 import CoverHero from '../../components/CoverHero.tsx'
+import useOnlineStatus from '../../hooks/useOnlineStatus.tsx'
 
 const HomePage = () => {
   const repository = createApiPostsRepository()
@@ -17,6 +18,7 @@ const HomePage = () => {
   const [filterPosts, setFilterPosts] = useState<Post[]>([])
   const [searchValue, setSearchValue] = useState('')
   const debouncedSearchValue = useDebounce(searchValue, 500)
+  const isOnline = useOnlineStatus()
 
   const getAllPosts = async () => {
     try {
@@ -24,6 +26,7 @@ const HomePage = () => {
       const response: PostDataResponse = await getPosts(repository)
       setPosts(response.data as Post[])
       setFilterPosts(response.data as Post[])
+      localStorage.setItem('posts', JSON.stringify(response.data))
       setLoading(false)
     } catch (e) {
       console.log(e)
@@ -51,8 +54,23 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    getAllPosts()
+    if (isOnline) {
+      getAllPosts().catch(e => console.log(e))
+    } else {
+      const posts = JSON.parse(localStorage.getItem('posts') ?? '[]')
+      setPosts(posts)
+      setFilterPosts(posts)
+    }
   }, [])
+
+  useEffect(() => {
+    if (!isOnline) {
+      setLoading(false)
+      const posts = JSON.parse(localStorage.getItem('posts') ?? '[]')
+      setPosts(posts)
+      setFilterPosts(posts)
+    }
+  }, [isOnline])
 
   useEffect(() => {
     if (debouncedSearchValue === '') {
@@ -63,7 +81,7 @@ const HomePage = () => {
   }, [debouncedSearchValue])
 
   return (
-    <div className='w-full min-h-[calc(100vh-4rem)] flex justify-center overflow-hidden pt-16'>
+    <div className='w-full min-h-[calc(100vh-4rem)] flex justify-center overflow-hidden pt-16 relative'>
       <main className='w-full h-auto max-w-6xl flex flex-col gap-10 px-5'>
         <CoverHero
           title={'Bienvenido a México Blog'}

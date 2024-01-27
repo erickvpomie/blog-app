@@ -42,7 +42,7 @@ const PostPage: FC = () => {
           title={post.title}
           description={`Autor: ${post.author_name}`}
           image={Cover}
-          className={'h-[20rem]'}
+          className={'!h-[20rem]'}
         />
         <div className='w-full flex flex-col gap-4 max-w-6xl'>
           <div

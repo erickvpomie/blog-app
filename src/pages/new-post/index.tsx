@@ -40,7 +40,7 @@ const NewPostPage = () => {
           title={'Crea una entrada'}
           description={'Crea una entrada para tu blog'}
           image={Cover}
-          className={'h-[20rem]'}
+          className={'!h-[20rem]'}
         />
         <div className='w-full flex flex-col gap-4 max-w-6xl px-5'>
           <CreatePostForm onSubmit={handleSubmit} />
